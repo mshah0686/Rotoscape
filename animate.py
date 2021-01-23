@@ -36,12 +36,12 @@ count = 0
 while success:
   cv2.imwrite("frames/frame%d.jpg" % count, image)     # save frame as JPEG file      
   success,image = vidcap.read()
+  if count % 2 == 0:
+    print("creating matte")
+    inputname = "frames/frame%d.jpg" % (count)
+    outputname = "mattes/frame%d.jpg" % (count)
+    fm.createMatte(inputname, outputname, 1080)
   count += 1
 
-for i in range(count):
-    inputname = "frames/frame%d.jpg" % (i)
-    outputname = "mattes/frame%d.jpg" % (i)
-    fm.createMatte(inputname, outputname, 128)
-
-os.system("ffmpeg -r 30 -i mattes/frame%01d.jpg -vcodec mpeg4 -y movie.mp4")
+os.system("ffmpeg -r 60 -i mattes/frame%01d.jpg -vcodec mpeg4 -y movie.mp4")
 
